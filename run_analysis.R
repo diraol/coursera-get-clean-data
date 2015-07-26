@@ -15,8 +15,8 @@ setwd("~/Cursos/coursera-get-clean-data")
     test_labels = read.table('data/test/y_test.txt')
     train_labels = read.table('data/train/y_train.txt')
     # Renaming test and train labels col name.
-    names(test_labels) = c('activity')
-    names(train_labels) = c('activity')
+    names(test_labels) = c('activity_id')
+    names(train_labels) = c('activity_id')
 
     # Reading subject files
     test_subject = read.table('data/test/subject_test.txt')
@@ -66,6 +66,18 @@ setwd("~/Cursos/coursera-get-clean-data")
 # Part 3 - Uses descriptive activity names to name the activities in the
 #           data set
 
+    # 3.1 - Loading the activity_labels file
+    activity_labels = read.table('data/activity_labels.txt', col.names = c('id','activity'))
+
+    # 3.2 - Merging activity_labels with the filtered_data by 'activity_id'
+    #       column, which is the second column
+    merged_df = merge(filtered_data, activity_labels, by.x='activity_id', by.y='id')
+
+    # 3.3 - Replacing the activity_id values with the 'activity' column values
+    filtered_data$activity_id = merged_df$activity
+
+    # 3.4 - Renaming the "activity_id" with "activity"
+    names(filtered_data)[names(filtered_data) == 'activity_id'] <- 'activity'
 
 
 # Part 4 -
